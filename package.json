@@ -1,0 +1,46 @@
+{
+  "name": "babel-plugin-typescript-resolver",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A babel plugin that transforms path aliases configured in tsconfig.json or jsconfig.json into relative paths",
+  "main": "index.js",
+  "repository": "https://github.com/yangmingshan/babel-plugin-typescript-resolver.git",
+  "author": "Yang Mingshan <y.mingshan3@gmail.com>",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "default": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "format": "prettier --check \"**/*.{js,json,md}\"",
+    "lint": "eslint .",
+    "test": "node --test-concurrency=1 index.test.js",
+    "prepare": "husky"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "babel",
+    "plugin",
+    "typescript",
+    "resolver"
+  ],
+  "peerDependencies": {
+    "@babel/core": "^8.0.1"
+  },
+  "dependencies": {
+    "get-tsconfig": "^4.14.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.5",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.10.0",
+    "globals": "^17.12.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
+    "prettier": "^3.9.7"
+  }
+}

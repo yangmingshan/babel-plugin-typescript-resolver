@@ -8,7 +8,7 @@ A babel plugin that transforms path aliases configured in `tsconfig.json` or `js
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./path/*", "./another-path/*"] // NOT supported!
+      "@/*": ["./path/*", "./another-path/*"] // ❌ NOT supported!
     }
   }
 }
@@ -20,7 +20,7 @@ A babel plugin that transforms path aliases configured in `tsconfig.json` or `js
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"] // Supported!
+      "@/*": ["./src/*"] // ✅ Supported!
     }
   }
 }

@@ -114,7 +114,12 @@ describe('babel-plugin-typescript-resolver', () => {
     await fs.writeFile(
       'tsconfig.json',
       JSON.stringify({
-        compilerOptions: { paths: { '@/*': ['./src/*'] } },
+        compilerOptions: {
+          paths: {
+            '@/*': ['./src/*'],
+            '@generated/*': ['./src/pages/.generated/*'],
+          },
+        },
       }),
     )
 
@@ -123,6 +128,7 @@ describe('babel-plugin-typescript-resolver', () => {
 import '@/foo';
 import '@/pages';
 import '@/pages/bar';
+import '@generated/baz';
 import '../foo';
 import '.';
 import './bar';
@@ -130,6 +136,7 @@ require('module');
 require('@/foo');
 require('@/pages');
 require('@/pages/bar');
+require('@generated/baz');
 require('../foo');
 require('.');
 require('./bar');
@@ -147,6 +154,7 @@ fn('@/foo');`,
 import "../foo";
 import ".";
 import "./bar";
+import "./.generated/baz";
 import '../foo';
 import '.';
 import './bar';
@@ -154,6 +162,7 @@ require('module');
 require("../foo");
 require(".");
 require("./bar");
+require("./.generated/baz");
 require('../foo');
 require('.');
 require('./bar');
@@ -166,7 +175,12 @@ fn('@/foo');`,
     await fs.writeFile(
       'jsconfig.json',
       JSON.stringify({
-        compilerOptions: { paths: { '@/*': ['./src/*'] } },
+        compilerOptions: {
+          paths: {
+            '@/*': ['./src/*'],
+            '@generated/*': ['./src/pages/.generated/*'],
+          },
+        },
       }),
     )
 
@@ -175,6 +189,7 @@ fn('@/foo');`,
 import '@/foo';
 import '@/pages';
 import '@/pages/bar';
+import '@generated/baz';
 import '../foo';
 import '.';
 import './bar';
@@ -182,6 +197,7 @@ require('module');
 require('@/foo');
 require('@/pages');
 require('@/pages/bar');
+require('@generated/baz');
 require('../foo');
 require('.');
 require('./bar');
@@ -199,6 +215,7 @@ fn('@/foo');`,
 import "../foo";
 import ".";
 import "./bar";
+import "./.generated/baz";
 import '../foo';
 import '.';
 import './bar';
@@ -206,6 +223,7 @@ require('module');
 require("../foo");
 require(".");
 require("./bar");
+require("./.generated/baz");
 require('../foo');
 require('.');
 require('./bar');

@@ -25,7 +25,7 @@ export default function typescriptResolver({ types: t }) {
           .replaceAll('\\', '/')
         if (relativePath === '') {
           relativePath = '.'
-        } else if (!relativePath.startsWith('.')) {
+        } else if (!relativePath.startsWith('..')) {
           relativePath = `./${relativePath}`
         }
         node.source = t.stringLiteral(relativePath)
@@ -57,7 +57,7 @@ export default function typescriptResolver({ types: t }) {
           .replaceAll('\\', '/')
         if (relativePath === '') {
           relativePath = '.'
-        } else if (!relativePath.startsWith('.')) {
+        } else if (!relativePath.startsWith('..')) {
           relativePath = `./${relativePath}`
         }
         node.arguments[0] = t.stringLiteral(relativePath)

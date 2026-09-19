@@ -44,6 +44,12 @@ A babel plugin that transforms path aliases configured in `tsconfig.json` or `js
 
 import utils from '@/utils'
 
+export { isArray } from '@/utils'
+
+export * from '@/utils'
+
+import('@/utils')
+
 require('@/utils')
 ```
 
@@ -53,6 +59,12 @@ require('@/utils')
 // src/pages/home.js
 
 import utils from '../utils'
+
+export { isArray } from '../utils'
+
+export * from '../utils'
+
+import('../utils')
 
 require('../utils')
 ```

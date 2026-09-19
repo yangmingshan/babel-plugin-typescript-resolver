@@ -176,6 +176,35 @@ import '@generated/baz';
 import '../foo';
 import '.';
 import './bar';
+
+export { a } from 'module';
+export { b } from '@/foo';
+export { c } from '@/pages';
+export { d } from '@/pages/bar';
+export { e } from '@generated/baz';
+export { f } from '../foo';
+export { g } from '.';
+export { h } from './bar';
+
+export * from 'module';
+export * from '@/foo';
+export * from '@/pages';
+export * from '@/pages/bar';
+export * from '@generated/baz';
+export * from '../foo';
+export * from '.';
+export * from './bar';
+
+import('module');
+import('@/foo');
+import('@/pages');
+import('@/pages/bar');
+import('@generated/baz');
+import('../foo');
+import('.');
+import('./bar');
+import(path);
+
 require('module');
 require('@/foo');
 require('@/pages');
@@ -202,6 +231,31 @@ import "./.generated/baz";
 import '../foo';
 import '.';
 import './bar';
+export { a } from 'module';
+export { b } from "../foo";
+export { c } from ".";
+export { d } from "./bar";
+export { e } from "./.generated/baz";
+export { f } from '../foo';
+export { g } from '.';
+export { h } from './bar';
+export * from 'module';
+export * from "../foo";
+export * from ".";
+export * from "./bar";
+export * from "./.generated/baz";
+export * from '../foo';
+export * from '.';
+export * from './bar';
+import('module');
+import("../foo");
+import(".");
+import("./bar");
+import("./.generated/baz");
+import('../foo');
+import('.');
+import('./bar');
+import(path);
 require('module');
 require("../foo");
 require(".");
@@ -237,6 +291,35 @@ import '@generated/baz';
 import '../foo';
 import '.';
 import './bar';
+
+export { a } from 'module';
+export { b } from '@/foo';
+export { c } from '@/pages';
+export { d } from '@/pages/bar';
+export { e } from '@generated/baz';
+export { f } from '../foo';
+export { g } from '.';
+export { h } from './bar';
+
+export * from 'module';
+export * from '@/foo';
+export * from '@/pages';
+export * from '@/pages/bar';
+export * from '@generated/baz';
+export * from '../foo';
+export * from '.';
+export * from './bar';
+
+import('module');
+import('@/foo');
+import('@/pages');
+import('@/pages/bar');
+import('@generated/baz');
+import('../foo');
+import('.');
+import('./bar');
+import(path);
+
 require('module');
 require('@/foo');
 require('@/pages');
@@ -263,6 +346,31 @@ import "./.generated/baz";
 import '../foo';
 import '.';
 import './bar';
+export { a } from 'module';
+export { b } from "../foo";
+export { c } from ".";
+export { d } from "./bar";
+export { e } from "./.generated/baz";
+export { f } from '../foo';
+export { g } from '.';
+export { h } from './bar';
+export * from 'module';
+export * from "../foo";
+export * from ".";
+export * from "./bar";
+export * from "./.generated/baz";
+export * from '../foo';
+export * from '.';
+export * from './bar';
+import('module');
+import("../foo");
+import(".");
+import("./bar");
+import("./.generated/baz");
+import('../foo');
+import('.');
+import('./bar');
+import(path);
 require('module');
 require("../foo");
 require(".");
@@ -273,6 +381,46 @@ require('.');
 require('./bar');
 require(path);
 fn('@/foo');`,
+    )
+  })
+
+  test('local exports', async () => {
+    const input = `const foo = 1;
+export { foo };
+export const bar = 2;
+export default foo;`
+
+    const { code } = await transformAsync(input, {
+      filename: './src/pages/home.js',
+      plugins: ['./index.js'],
+    })
+
+    assert.equal(code, input)
+  })
+
+  test('dynamic import comments and options', async () => {
+    await fs.writeFile(
+      'tsconfig.json',
+      JSON.stringify({
+        compilerOptions: { paths: { '@/*': ['./src/*'] } },
+      }),
+    )
+
+    const { code } = await transformAsync(
+      `import(/* webpackChunkName: "foo" */ '@/foo', { with: { type: 'json' } });`,
+      {
+        filename: './src/pages/home.js',
+        plugins: ['./index.js'],
+      },
+    )
+
+    assert.equal(
+      code,
+      `import(/* webpackChunkName: "foo" */"../foo", {
+  with: {
+    type: 'json'
+  }
+});`,
     )
   })
 

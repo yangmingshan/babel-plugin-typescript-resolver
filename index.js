@@ -5,8 +5,17 @@ export default function typescriptResolver({ types: t }) {
   return {
     name: 'typescript-resolver',
     visitor: {
-      ImportDeclaration({ node }, { filename }) {
-        if (!filename || node.source.value.startsWith('.')) return
+      'ImportDeclaration|ExportNamedDeclaration|ExportAllDeclaration|ImportExpression'(
+        { node },
+        { filename },
+      ) {
+        if (
+          !filename ||
+          !t.isStringLiteral(node.source) ||
+          node.source.value.startsWith('.')
+        ) {
+          return
+        }
 
         let tsconfig = getTsconfig(filename)
         if (!tsconfig) {
@@ -33,7 +42,10 @@ export default function typescriptResolver({ types: t }) {
         } else if (!relativePath.startsWith('..')) {
           relativePath = `./${relativePath}`
         }
-        node.source = t.stringLiteral(relativePath)
+        node.source = t.inheritsComments(
+          t.stringLiteral(relativePath),
+          node.source,
+        )
       },
       CallExpression({ node }, { filename }) {
         if (

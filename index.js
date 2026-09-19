@@ -1,6 +1,14 @@
 import path from 'node:path'
 import { getTsconfig, createPathsMatcher } from 'get-tsconfig'
 
+function isAncestor(value) {
+  return value === '..' || value.startsWith('../')
+}
+
+function isRelative(value) {
+  return value === '.' || value.startsWith('./') || isAncestor(value)
+}
+
 export default function typescriptResolver({ types: t }) {
   return {
     name: 'typescript-resolver',
@@ -12,7 +20,7 @@ export default function typescriptResolver({ types: t }) {
         if (
           !filename ||
           !t.isStringLiteral(node.source) ||
-          node.source.value.startsWith('.')
+          isRelative(node.source.value)
         ) {
           return
         }
@@ -39,7 +47,7 @@ export default function typescriptResolver({ types: t }) {
           .replaceAll('\\', '/')
         if (relativePath === '') {
           relativePath = '.'
-        } else if (!relativePath.startsWith('..')) {
+        } else if (!isAncestor(relativePath)) {
           relativePath = `./${relativePath}`
         }
         node.source = t.inheritsComments(
@@ -52,7 +60,7 @@ export default function typescriptResolver({ types: t }) {
           !filename ||
           node.callee.name !== 'require' ||
           !t.isStringLiteral(node.arguments[0]) ||
-          node.arguments[0].value.startsWith('.')
+          isRelative(node.arguments[0].value)
         ) {
           return
         }
@@ -79,7 +87,7 @@ export default function typescriptResolver({ types: t }) {
           .replaceAll('\\', '/')
         if (relativePath === '') {
           relativePath = '.'
-        } else if (!relativePath.startsWith('..')) {
+        } else if (!isAncestor(relativePath)) {
           relativePath = `./${relativePath}`
         }
         node.arguments[0] = t.stringLiteral(relativePath)

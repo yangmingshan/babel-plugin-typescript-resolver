@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-typescript-resolver",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "A babel plugin that transforms path aliases configured in tsconfig.json or jsconfig.json into relative paths",
   "main": "index.js",

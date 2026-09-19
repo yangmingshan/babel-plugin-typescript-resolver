@@ -424,6 +424,25 @@ export default foo;`
     )
   })
 
+  test('require comments', async () => {
+    await fs.writeFile(
+      'tsconfig.json',
+      JSON.stringify({
+        compilerOptions: { paths: { '@/*': ['./src/*'] } },
+      }),
+    )
+
+    const { code } = await transformAsync(
+      `require(/* webpackIgnore: true */ '@/foo');`,
+      {
+        filename: './src/pages/home.js',
+        plugins: ['./index.js'],
+      },
+    )
+
+    assert.equal(code, `require(/* webpackIgnore: true */"../foo");`)
+  })
+
   test('nested tsconfig', async () => {
     await fs.writeFile('tsconfig.json', JSON.stringify({ compilerOptions: {} }))
     await fs.mkdir('packages/foo', { recursive: true })

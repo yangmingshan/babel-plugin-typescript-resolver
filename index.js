@@ -90,7 +90,10 @@ export default function typescriptResolver({ types: t }) {
         } else if (!isAncestor(relativePath)) {
           relativePath = `./${relativePath}`
         }
-        node.arguments[0] = t.stringLiteral(relativePath)
+        node.arguments[0] = t.inheritsComments(
+          t.stringLiteral(relativePath),
+          node.arguments[0],
+        )
       },
     },
   }

@@ -40,6 +40,50 @@ describe('babel-plugin-typescript-resolver', () => {
     assert.equal(code, `import '@/foo';\nrequire('@/foo');`)
   })
 
+  test('tsconfig with baseUrl', async () => {
+    await fs.writeFile(
+      'tsconfig.json',
+      JSON.stringify({
+        compilerOptions: { baseUrl: './', paths: { '@/*': ['./src/*'] } },
+      }),
+    )
+
+    const { code } = await transformAsync(
+      `import 'module';\nimport '@/foo';\nrequire('module');\nrequire('@/foo');`,
+      {
+        filename: './src/pages/home.js',
+        plugins: ['./index.js'],
+      },
+    )
+
+    assert.equal(
+      code,
+      `import 'module';\nimport '@/foo';\nrequire('module');\nrequire('@/foo');`,
+    )
+  })
+
+  test('jsconfig with baseUrl', async () => {
+    await fs.writeFile(
+      'jsconfig.json',
+      JSON.stringify({
+        compilerOptions: { baseUrl: './', paths: { '@/*': ['./src/*'] } },
+      }),
+    )
+
+    const { code } = await transformAsync(
+      `import 'module';\nimport '@/foo';\nrequire('module');\nrequire('@/foo');`,
+      {
+        filename: './src/pages/home.js',
+        plugins: ['./index.js'],
+      },
+    )
+
+    assert.equal(
+      code,
+      `import 'module';\nimport '@/foo';\nrequire('module');\nrequire('@/foo');`,
+    )
+  })
+
   test('tsconfig without paths', async () => {
     await fs.writeFile('tsconfig.json', JSON.stringify({ compilerOptions: {} }))
 

@@ -2,25 +2,36 @@
 
 A babel plugin that transforms path aliases configured in `tsconfig.json` or `jsconfig.json` into relative paths. This plugin uses [get-tsconfig](https://github.com/privatenumber/get-tsconfig) under the hood.
 
-### ⚠️ Multiple paths is not supported
+### ⚠️ Unsupported patterns
 
 ```json
 {
   "compilerOptions": {
+    "baseUrl": ".", // ❌ baseUrl is NOT supported!
     "paths": {
-      "@/*": ["./path/*", "./another-path/*"] // ❌ NOT supported!
+      "@/*": ["./src/*"]
     }
   }
 }
 ```
 
-### Make sure only map to one path
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./path/*", "./another-path/*"] // ❌ Multiple paths is NOT supported!
+    }
+  }
+}
+```
+
+### Supported pattern
 
 ```json
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"] // ✅ Supported!
+      "@/*": ["./src/*"]
     }
   }
 }

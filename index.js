@@ -12,7 +12,12 @@ export default function typescriptResolver({ types: t }) {
         if (!tsconfig) {
           tsconfig = getTsconfig(filename, 'jsconfig.json')
         }
-        if (!tsconfig) return
+        if (
+          !tsconfig ||
+          tsconfig.config.compilerOptions?.baseUrl !== undefined
+        ) {
+          return
+        }
 
         const pathsMatcher = createPathsMatcher(tsconfig)
         if (!pathsMatcher) return
@@ -44,7 +49,12 @@ export default function typescriptResolver({ types: t }) {
         if (!tsconfig) {
           tsconfig = getTsconfig(filename, 'jsconfig.json')
         }
-        if (!tsconfig) return
+        if (
+          !tsconfig ||
+          tsconfig.config.compilerOptions?.baseUrl !== undefined
+        ) {
+          return
+        }
 
         const pathsMatcher = createPathsMatcher(tsconfig)
         if (!pathsMatcher) return

@@ -8,9 +8,9 @@ export default function typescriptResolver({ types: t }) {
       ImportDeclaration({ node }, { filename }) {
         if (!filename || node.source.value.startsWith('.')) return
 
-        let tsconfig = getTsconfig()
+        let tsconfig = getTsconfig(filename)
         if (!tsconfig) {
-          tsconfig = getTsconfig(undefined, 'jsconfig.json')
+          tsconfig = getTsconfig(filename, 'jsconfig.json')
         }
         if (!tsconfig) return
 
@@ -40,9 +40,9 @@ export default function typescriptResolver({ types: t }) {
           return
         }
 
-        let tsconfig = getTsconfig()
+        let tsconfig = getTsconfig(filename)
         if (!tsconfig) {
-          tsconfig = getTsconfig(undefined, 'jsconfig.json')
+          tsconfig = getTsconfig(filename, 'jsconfig.json')
         }
         if (!tsconfig) return
 

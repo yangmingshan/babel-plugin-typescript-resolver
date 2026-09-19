@@ -10,18 +10,6 @@ describe('babel-plugin-typescript-resolver', () => {
     await fs.rm('packages', { recursive: true, force: true })
   })
 
-  test('no config', async () => {
-    const { code } = await transformAsync(
-      `import '@/foo';\nrequire('@/foo');`,
-      {
-        filename: './src/pages/home.js',
-        plugins: ['./index.js'],
-      },
-    )
-
-    assert.equal(code, `import '@/foo';\nrequire('@/foo');`)
-  })
-
   test('no filename', async () => {
     await fs.writeFile(
       'tsconfig.json',
@@ -33,6 +21,18 @@ describe('babel-plugin-typescript-resolver', () => {
     const { code } = await transformAsync(
       `import '@/foo';\nrequire('@/foo');`,
       {
+        plugins: ['./index.js'],
+      },
+    )
+
+    assert.equal(code, `import '@/foo';\nrequire('@/foo');`)
+  })
+
+  test('no config', async () => {
+    const { code } = await transformAsync(
+      `import '@/foo';\nrequire('@/foo');`,
+      {
+        filename: './src/pages/home.js',
         plugins: ['./index.js'],
       },
     )
